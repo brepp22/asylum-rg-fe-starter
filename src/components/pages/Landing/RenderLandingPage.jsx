@@ -1,8 +1,8 @@
 import React from 'react';
-// ADD IMPORTS BACK FOR GRAPHS SECTION
-// import GrantRatesByOfficeImg from '../../../styles/Images/bar-graph-no-text.png';
-// import GrantRatesByNationalityImg from '../../../styles/Images/pie-chart-no-text.png';
-// import GrantRatesOverTimeImg from '../../../styles/Images/line-graph-no-text.png';
+//ADD IMPORTS BACK FOR GRAPHS SECTION
+import GrantRatesByOfficeImg from '../../../styles/Images/bar-graph-no-text.png';
+import GrantRatesByNationalityImg from '../../../styles/Images/pie-chart-no-text.png';
+import GrantRatesOverTimeImg from '../../../styles/Images/line-graph-no-text.png';
 import HrfPhoto from '../../../styles/Images/paper-stack.jpg';
 import '../../../styles/RenderLandingPage.less';
 import { Button } from 'antd';
@@ -18,6 +18,11 @@ function RenderLandingPage(props) {
 
   const history = useHistory();
 
+  const barGraph = GrantRatesByOfficeImg;
+  const pieChart = GrantRatesByNationalityImg;
+  const lineGraph = GrantRatesOverTimeImg;
+  
+
   return (
     <div className="main">
       <div className="header">
@@ -32,14 +37,39 @@ function RenderLandingPage(props) {
       </div>
 
       {/* Graphs Section: Add code here for the graphs section for your first ticket */}
-      {/* <div className="graphs-section"> */}
+      <div className="graphs-section"> 
+        <div class="grant-rates-by-office-container">
+        <img src={barGraph} alt="Grant Rates By Office Graph" className="bar-graph" />
+        <p>Search Grant Rates By Office</p>
+        </div>
+        <div class="grant-rates-by-nationality-container">
+        <img src={pieChart} alt="Pie Chart" className="pie-graph" />
+        <p>Search Grant Rates By Nationality</p>
+        </div>
+        <div class="grant-rates-over-time-container">
+        <img src={lineGraph} alt="Line Graph" className="line-graph" />
+        <p>Search Grant Rates Over Time</p>
+        </div>
+        </div>
       <div className="view-more-data-btn-container">
         <Button
           type="default"
-          style={{ backgroundColor: '#404C4A', color: '#FFFFFF' }}
+          style={{ backgroundColor: '#404C4A', color: '#FFFFFF',
+             border: '1px solid #FFFFFF',
+             borderRadius: '2px'
+          }}
           onClick={() => history.push('/graphs')}
         >
           View the Data
+        </Button>
+        <Button 
+        type="default"
+        style={{backgroundColor: '#404C4A' , color: '#FFFFFF', 
+          border: '1px solid #FFFFFF',
+          borderRadius: '2px'
+        }}
+        >
+          Download the Data
         </Button>
       </div>
 
