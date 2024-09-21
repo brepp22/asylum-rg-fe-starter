@@ -22,8 +22,20 @@ function RenderLandingPage(props) {
   const barGraph = GrantRatesByOfficeImg;
   const pieChart = GrantRatesByNationalityImg;
   const lineGraph = GrantRatesOverTimeImg;
-  
 
+  //put data in variable for use 
+  const csvFilePath = '/COW2021001887-I589Data.csv';
+
+  //create functionality for download data button to work 
+  const downloadCSV = () => {
+    const link = document.createElement('a');
+    link.href = csvFilePath; 
+    link.download = 'COW2021001887-I589Data.csv'; 
+    document.body.appendChild(link); 
+    link.click(); 
+    document.body.removeChild(link); 
+  };
+  
   return (
     <div className="main">
       <div className="header">
@@ -39,15 +51,15 @@ function RenderLandingPage(props) {
 
       {/* Graphs Section: Add code here for the graphs section for your first ticket */}
       <div className="graphs-section"> 
-        <div class="grant-rates-by-office-container">
+        <div className="grant-rates-by-office-container">
         <img src={barGraph} alt="Grant Rates By Office Graph" className="bar-graph" />
         <p>Search Grant Rates By Office</p>
         </div>
-        <div class="grant-rates-by-nationality-container">
+        <div className="grant-rates-by-nationality-container">
         <img src={pieChart} alt="Pie Chart" className="pie-graph" />
         <p>Search Grant Rates By Nationality</p>
         </div>
-        <div class="grant-rates-over-time-container">
+        <div className="grant-rates-over-time-container">
         <img src={lineGraph} alt="Line Graph" className="line-graph" />
         <p>Search Grant Rates Over Time</p>
         </div>
@@ -69,6 +81,7 @@ function RenderLandingPage(props) {
           border: '1px solid #FFFFFF',
           borderRadius: '2px'
         }}
+        onClick={downloadCSV}
         >
           Download the Data
         </Button>
@@ -94,8 +107,8 @@ function RenderLandingPage(props) {
         {/* Bottom Section: Add code here for the graphs section for your first ticket */}
         <div className="bottom-section">
            <h1>Systemic Disparity Insights</h1> 
-           <div class="data-container">
-              <div class="first-data-point-container">
+           <div className="data-container">
+              <div className="first-data-point-container">
                 <h2>36%</h2>
                 <h3>By the end of the Trump administration, 
                   the average asylum office grant rate had 
@@ -103,12 +116,12 @@ function RenderLandingPage(props) {
                   percent in fiscal year 2016 to 28 percent 
                   in fiscal year 2020.</h3>
               </div>
-              <div class="second-data-point-container">
+              <div className="second-data-point-container">
                 <h2>5%</h2>
                 <h3>The New York asylum office grant rate 
                   dropped to 5 percent in fiscal year 2020.</h3>
               </div>
-              <div class="third-data-point-container">
+              <div className="third-data-point-container">
                 <h2>6x Lower</h2>
                 <h3>Between fiscal year 2017 and 2020, 
                   the New York asylum office’s average grant 
