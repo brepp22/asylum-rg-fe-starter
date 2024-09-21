@@ -116,6 +116,17 @@ function RenderLandingPage(props) {
                   Francisco asylum office.</h3>
               </div>
            </div>
+           <div>
+           <Button  
+           type="default"
+           style={{backgroundColor: '#404C4A' , color: '#FFFFFF', 
+             border: '1px solid #FFFFFF',
+             borderRadius: '2px'
+             }} 
+             onClick={() => window.open('https://humanrightsfirst.org/library/uscis-records-reveal-systemic-disparities-in-asylum-decisions/')}>
+              Read More
+            </Button>
+          </div>
           </div>
         <p onClick={() => scrollToTop()} className="back-to-top">
           Back To Top ^
