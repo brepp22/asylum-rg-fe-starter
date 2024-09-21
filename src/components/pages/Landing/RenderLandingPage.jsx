@@ -136,7 +136,9 @@ function RenderLandingPage(props) {
              border: '1px solid #FFFFFF',
              borderRadius: '2px'
              }} 
-             onClick={() => window.open('https://humanrightsfirst.org/library/uscis-records-reveal-systemic-disparities-in-asylum-decisions/')}>
+             onClick={() => window.open(
+              'https://humanrightsfirst.org/library/uscis-records-reveal-systemic-disparities-in-asylum-decisions/'
+              )}>
               Read More
             </Button>
           </div>
