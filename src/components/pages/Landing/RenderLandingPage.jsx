@@ -28,12 +28,12 @@ function RenderLandingPage(props) {
 
   //create functionality for download data button to work 
   const downloadCSV = () => {
-    const link = document.createElement('a');
-    link.href = csvFilePath; 
-    link.download = 'COW2021001887-I589Data.csv'; 
-    document.body.appendChild(link); 
-    link.click(); 
-    document.body.removeChild(link); 
+    const link = document.createElement('a'); // creates an anchor element
+    link.href = csvFilePath; //sets attribute of the link to csvFilePath 
+    link.download = 'COW2021001887-I589Data.csv'; //download the attribute
+    document.body.appendChild(link); //make it apart/append to the DOM
+    link.click(); //triggers the link to initiate download
+    document.body.removeChild(link); //remove it , clean up download action 
   };
   
   return (
@@ -65,6 +65,7 @@ function RenderLandingPage(props) {
         </div>
         </div>
       <div className="view-more-data-btn-container">
+        {/* Button takes you to data graphs */}
         <Button
           type="default"
           style={{ backgroundColor: '#404C4A', color: '#FFFFFF',
@@ -75,6 +76,7 @@ function RenderLandingPage(props) {
         >
           View the Data
         </Button>
+        {/* Button downloads the csv data */}
         <Button 
         type="default"
         style={{backgroundColor: '#404C4A' , color: '#FFFFFF', 
@@ -130,6 +132,7 @@ function RenderLandingPage(props) {
               </div>
            </div>
            <div>
+            {/* Button directs you to Read More about Human Rights First Systemic Disparities */}
            <Button  
            type="default"
            style={{backgroundColor: '#404C4A' , color: '#FFFFFF', 
