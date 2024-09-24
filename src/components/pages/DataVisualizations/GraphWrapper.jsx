@@ -10,7 +10,7 @@ import YearLimitsSelect from './YearLimitsSelect';
 import ViewSelect from './ViewSelect';
 import axios from 'axios';
 import { resetVisualizationQuery } from '../../../state/actionCreators';
-import test_data from '../../../data/test_data.json';
+//import test_data from '../../../data/test_data.json';
 import { colors } from '../../../styles/data_vis_colors';
 import ScrollToTopOnMount from '../../../utils/scrollToTopOnMount';
 
@@ -50,7 +50,12 @@ function GraphWrapper(props) {
         break;
     }
   }
-  function updateStateWithNewData(years, view, office, stateSettingCallback) {
+  function updateStateWithNewData(years, view, office, stateSettingCallback ) {
+
+      const url = `https://hrf-asylum-be-b.herokuapp.com/cases`;
+
+  
+
     /*
           _                                                                             _
         |                                                                                 |
@@ -72,10 +77,13 @@ function GraphWrapper(props) {
                                    -- Mack 
     
     */
-
-    if (office === 'all' || !office) {
+    const fiscalArr = [];
+    const citizenshipArr =[];
+  
+    
+    if (office === 'all' || !office || 'Los Angeles, CA' || 'San Francisco, CA' || 'New York, NY' || 'Houston, TX' || 'Chicago, IL' || 'Newark, NJ' || 'Arlington, VA') {
       axios
-        .get(process.env.REACT_APP_API_URI, {
+        .get(`${url}/fiscalSummary`, {
           // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
           params: {
             from: years[0],
@@ -83,14 +91,19 @@ function GraphWrapper(props) {
           },
         })
         .then(result => {
-          stateSettingCallback(view, office, test_data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          fiscalArr.push(result.data);
+          console.log(fiscalArr);
+        //   stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+        // })
+          stateSettingCallback(view, office, fiscalArr);
+      
         })
         .catch(err => {
           console.error(err);
         });
     } else {
       axios
-        .get(process.env.REACT_APP_API_URI, {
+        .get(`${url}/citizenshipSummary`, {
           // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
           params: {
             from: years[0],
@@ -99,13 +112,17 @@ function GraphWrapper(props) {
           },
         })
         .then(result => {
-          stateSettingCallback(view, office, test_data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          citizenshipArr.push(result.data);
+          stateSettingCallback(view, office, citizenshipArr); // <-- `test_data` here can be simply replaced by `result.data` in prod!
         })
         .catch(err => {
           console.error(err);
         });
     }
   }
+
+
+
   const clearQuery = (view, office) => {
     dispatch(resetVisualizationQuery(view, office));
   };
