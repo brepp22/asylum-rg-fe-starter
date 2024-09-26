@@ -50,11 +50,70 @@ function GraphWrapper(props) {
         break;
     }
   }
+
+ 
+
   function updateStateWithNewData(years, view, office, stateSettingCallback ) {
 
       const url = `https://hrf-asylum-be-b.herokuapp.com/cases`;
 
+      let endpoint = view === 'citizenship' ? 'citizenshipSummary' : 'fiscalSummary';
+
+      if (view === 'citizenship'){
+        endpoint = 'citizenshipSummary';
+      } else if (view === 'time-series' || view === 'office-heat-map' ){
+        endpoint = 'fiscalSummary';
+      }
+      const fiscalArr = [];
+
+      if ((view === 'office-heat-map' || view === 'time-series') && 
+      (office === 'all' || !office || 'Los Angeles, CA' || 'San Francisco, CA' || 
+      'New York, NY' || 'Houston, TX' || 'Chicago, IL' || 'Newark, NJ' || 'Arlington, VA')) {
+        axios
+          .get(`${url}/${endpoint}`, {
+            // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
+            params: {
+              from: years[0],
+              to: years[1],
+              office: office 
+            },
+          })
+          .then(result => {
+            fiscalArr.push(result.data);
+          //   stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          // })
+          stateSettingCallback(view, office,fiscalArr);
+        
+          });
+        }
   
+    if (view === 'citizenship'){
+        axios
+          .get(`${url}/${endpoint}`, {
+            // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
+            params: {
+                  office: office,
+                  to: years[0],
+                  from: years[1],
+            },
+          })
+          .then(result => {
+          console.log(result.data); // Check the results in the console
+          stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          })
+          
+          .catch(err => {
+            console.error(err);
+          });
+     }
+    }
+
+  
+
+
+
+
+
 
     /*
           _                                                                             _
@@ -77,51 +136,8 @@ function GraphWrapper(props) {
                                    -- Mack 
     
     */
-    const fiscalArr = [];
-    const citizenshipArr =[];
+
   
-    
-    if (office === 'all' || !office || 'Los Angeles, CA' || 'San Francisco, CA' || 'New York, NY' || 'Houston, TX' || 'Chicago, IL' || 'Newark, NJ' || 'Arlington, VA') {
-      axios
-        .get(`${url}/fiscalSummary`, {
-          // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
-          params: {
-            from: years[0],
-            to: years[1],
-          },
-        })
-        .then(result => {
-          fiscalArr.push(result.data);
-          console.log(fiscalArr);
-        //   stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-        // })
-          stateSettingCallback(view, office, fiscalArr);
-      
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    } else {
-      axios
-        .get(`${url}/citizenshipSummary`, {
-          // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
-          params: {
-            from: years[0],
-            to: years[1],
-            office: office,
-          },
-        })
-        .then(result => {
-          citizenshipArr.push(result.data);
-          stateSettingCallback(view, office, citizenshipArr); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-        })
-        .catch(err => {
-          console.error(err);
-        });
-    }
-  }
-
-
 
   const clearQuery = (view, office) => {
     dispatch(resetVisualizationQuery(view, office));
