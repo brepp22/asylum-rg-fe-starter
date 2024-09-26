@@ -51,69 +51,57 @@ function GraphWrapper(props) {
     }
   }
 
- 
-
-  function updateStateWithNewData(years, view, office, stateSettingCallback ) {
-
-      const url = `https://hrf-asylum-be-b.herokuapp.com/cases`;
-
-      let endpoint = view === 'citizenship' ? 'citizenshipSummary' : 'fiscalSummary';
-
-      if (view === 'citizenship'){
-        endpoint = 'citizenshipSummary';
-      } else if (view === 'time-series' || view === 'office-heat-map' ){
-        endpoint = 'fiscalSummary';
-      }
-      const fiscalArr = [];
-
-      if ((view === 'office-heat-map' || view === 'time-series') && 
-      (office === 'all' || !office || 'Los Angeles, CA' || 'San Francisco, CA' || 
-      'New York, NY' || 'Houston, TX' || 'Chicago, IL' || 'Newark, NJ' || 'Arlington, VA')) {
-        axios
-          .get(`${url}/${endpoint}`, {
-            // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
-            params: {
-              from: years[0],
-              to: years[1],
-              office: office 
-            },
-          })
-          .then(result => {
-            fiscalArr.push(result.data);
-          //   stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-          // })
-          stateSettingCallback(view, office,fiscalArr);
-        
-          });
-        }
+  function updateStateWithNewData(years, view, office, stateSettingCallback) {
+    const url = `https://hrf-asylum-be-b.herokuapp.com/cases`;
   
-    if (view === 'citizenship'){
-        axios
-          .get(`${url}/${endpoint}`, {
-            // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
-            params: {
-                  office: office,
-                  to: years[0],
-                  from: years[1],
-            },
-          })
-          .then(result => {
-          console.log(result.data); // Check the results in the console
-          stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-          })
-          
-          .catch(err => {
-            console.error(err);
-          });
-     }
-    }
+    // Prepare the array to hold the axios requests for both endpoints
+    const requests = [
+      axios.get(`${url}/fiscalSummary`, {
+        params: {
+          from: years[0],
+          to: years[1],
+          office: office,
+        },
+      }),
+      axios.get(`${url}/citizenshipSummary`, {
+        params: {
+          from: years[0],
+          to: years[1],
+          office: office,
+        },
+      }),
+    ];
 
+    Promise.all(requests)
+      .then(([fiscalResponse, citizenshipResponse]) => {
+
+        const fiscalData = fiscalResponse.data || {};
+        const yearResults = fiscalData.yearResults || [];
+        console.log(yearResults);
+
+        const summaryArray = [
+          {
+            adminClosed: fiscalData.adminClosed,
+            asylumTerminated: fiscalData.asylumTerminated,
+            closedNacaraGrant: fiscalData.closedNacaraGrant,
+            denied: fiscalData.denied,
+            granted: fiscalData.granted,
+            totalCases: fiscalData.totalCases,
+            totalGranted: fiscalData.totalGranted,
+            yearResults: yearResults,
+            citizenshipResults: citizenshipResponse.data,
+          },
+        ];
+
+        console.log(summaryArray);
   
-
-
-
-
-
+        // Call the state setting callback with the combined data
+        stateSettingCallback(view, office, summaryArray);
+    })
+      .catch((err) => {
+        console.error('Error fetching or combining data:', err);
+      });
+  }
 
     /*
           _                                                                             _
