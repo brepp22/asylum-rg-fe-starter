@@ -54,7 +54,7 @@ function GraphWrapper(props) {
   function updateStateWithNewData(years, view, office, stateSettingCallback) {
     const url = `https://hrf-asylum-be-b.herokuapp.com/cases`;
   
-    // Prepare the array to hold the axios requests for both endpoints
+    // Prepare the axios requests for both endpoints
     const requests = [
       axios.get(`${url}/fiscalSummary`, {
         params: {
@@ -77,29 +77,31 @@ function GraphWrapper(props) {
 
         const fiscalData = fiscalResponse.data || {};
         const yearResults = fiscalData.yearResults || [];
-        console.log(yearResults);
+        //console.log(yearResults); ensures the yearResults data is proper , nested array in fiscal 
 
-        const summaryArray = [
+        //ensure the data is an array to be rendered properly 
+        const summaryArray = [ 
           {
-            adminClosed: fiscalData.adminClosed,
-            asylumTerminated: fiscalData.asylumTerminated,
-            closedNacaraGrant: fiscalData.closedNacaraGrant,
-            denied: fiscalData.denied,
-            granted: fiscalData.granted,
-            totalCases: fiscalData.totalCases,
-            totalGranted: fiscalData.totalGranted,
-            yearResults: yearResults,
-            citizenshipResults: citizenshipResponse.data,
+            adminClosed: fiscalData.adminClosed, //fiscal
+            asylumTerminated: fiscalData.asylumTerminated, //fiscal
+            closedNacaraGrant: fiscalData.closedNacaraGrant, //fiscal
+            denied: fiscalData.denied, //fiscal
+            granted: fiscalData.granted, //fiscal
+            totalCases: fiscalData.totalCases, //fiscal
+            totalGranted: fiscalData.totalGranted, //fiscal
+            yearResults: yearResults, //array nested in fiscal
+            citizenshipResults: citizenshipResponse.data, //citizenship
           },
         ];
+        
 
-        console.log(summaryArray);
+       // console.log(summaryArray); ensure the data from fiscal and citizenship are being fetched properly
   
         // Call the state setting callback with the combined data
         stateSettingCallback(view, office, summaryArray);
     })
       .catch((err) => {
-        console.error('Error fetching or combining data:', err);
+        console.error('Error fetching data:', err);
       });
   }
 
