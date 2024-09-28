@@ -5,7 +5,7 @@ import Logo from '../../styles/Images/WhiteLogo.png';
 import { colors } from '../../styles/data_vis_colors';
 
 import { useAuth0 } from '@auth0/auth0-react';
-import { AuthButton } from '../../AuthButton';
+import { AuthButton } from '../pages/Profile/AuthButton';
 
 const { primary_accent_color } = colors;
 

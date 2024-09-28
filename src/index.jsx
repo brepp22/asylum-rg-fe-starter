@@ -24,7 +24,7 @@ import reducer from './state/reducers';
 import { colors } from './styles/data_vis_colors';
 
 import Auth0ProviderWithHistory from "./auth0-provider-with-history";
-import  Profile from './Profile';
+import  Profile from './components/pages/Profile/Profile';
 
 const { primary_accent_color } = colors;
 

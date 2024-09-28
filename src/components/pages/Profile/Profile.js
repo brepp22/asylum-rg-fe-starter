@@ -12,7 +12,7 @@ function Profile() {
 
   return (
     isAuthenticated && (
-      <div style={{ display: 'flex',
+      <div clasName = 'auth'style={{ display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
